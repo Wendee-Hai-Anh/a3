@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My p5.js Sketch</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Quicksand:wght@300..700&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.0/lib/p5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.0/lib/addons/p5.sound.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="dots"></div>
+        <div class="main-content">
+            <div class="subtitle">Welcome to</div>
+            <h1 class="title-intro">PLUSEEDIOR</h1>
+            
+            <div class="input-container">
+                <input 
+                    type="text" 
+                    class="name-input" 
+                    id="nameText"
+                    placeholder="Enter your name here..."
+                    autocomplete="given-name"
+                >
+                <button class="continue-btn" id="continueBtn">Start your journey of transformation</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        // Handle name input
+        const nameInput = document.getElementById('nameText');
+        const continueBtn = document.getElementById('continueBtn');
+        
+        nameInput.addEventListener('input', function() {
+            if (this.value.trim().length > 0) {
+                continueBtn.classList.add('show');
+            } else {
+                continueBtn.classList.remove('show');
+            }
+        });
+        
+        nameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && this.value.trim().length > 0) {
+                handleContinue();
+            }
+        });
+        
+        continueBtn.addEventListener('click', handleContinue);
+        
+        function handleContinue() {
+    const name = nameInput.value.trim();
+    if (!name) return;
+
+    // 1) store name for the next page
+    sessionStorage.setItem('userName', name);
+
+    // 2) optional quick fade to make it feel nicer
+    document.body.style.transition = 'opacity .35s ease';
+    document.body.style.opacity = '0.85';
+
+    // 3) go to the app after a short beat
+    setTimeout(() => {
+      // If your app file is named differently, change 'app.html'
+      window.location.href = 'app.html';
+    }, 300);
+  }
+        
+        // Initialize dots when page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    const n = sessionStorage.getItem('userName')
+            || localStorage.getItem('pluto_name')
+            || new URLSearchParams(location.search).get('name')
+            || '';
+    if (n && window.bgSetName) window.bgSetName(n);
+            
+            document.querySelector('.container').style.backgroundPosition = 
+                `${mouseX * 20}px ${mouseY * 20}px`;
+        });
+    </script>
+</body>
+</html>

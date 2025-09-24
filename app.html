@@ -1,0 +1,125 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My p5.js Sketch</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Quicksand:wght@300..700&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.0/lib/p5.min.js"></script>
+</head>
+
+<body>
+  <audio id="bgm" src="infinite-creativity.mp3"
+       autoplay loop muted preload="auto" playsinline></audio>
+ <div id="bgLayer" class="bg-layer" aria-hidden="true"></div>
+ <script src="https://cdn.jsdelivr.net/npm/p5@1.11.0/lib/addons/p5.sound.min.js"></script>
+  <button class="continue-btn" id="continueBtn">Start your journey of transformation</button>
+<canvas id="introFx" class="fx"></canvas>
+  <div class="information">
+    <span>
+      Pluto is often associated with destruction, power struggles, and the hidden depths of the subconscious.
+      In this project, however, I explore Pluto as a seed—a force that, even in its moments of collapse,
+      contains the potential for renewal. Its placement across different houses and zodiac signs reflects
+      the unique struggles and transformations each person faces. No matter where Pluto manifests, it reminds
+      us that failure, endings, or criticism can serve as fertile ground for regeneration. From loss and
+      limitation, we can revive, rebuild, and return stronger—emerging more resilient and beautiful than before.
+    </span>
+  </div>
+
+  <span class="placementkey">← → to choose your placement</span>
+  <span class="housekey">↑ to choose House</span>
+  <span class="zodiackey">↓ to choose Zodiac</span>
+  <span class="layoutkey">Press 'S' to save your Pluto</span>
+  <button class="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode">◐</button>
+  <!-- House Information Panel (Right) -->
+  <div class="info-panel right-panel" id="housePanelRight" style="display: none;">
+    <div class="panel-header">
+      <button class="close-btn" onclick="closeHouseInfo()">&times;</button>
+      <h2 id="houseTitleRight">Pluto in 1st House</h2>
+    </div>
+    <div class="panel-content" id="houseContentContainer">
+      <div class="content-inner">
+        <div id="houseContentRight">
+          <p>Navigate with ← → arrows to see Pluto's house influences.</p>
+        </div>
+      </div>
+      <button class="save-button" id="houseSaveBtn" onclick="saveHouseInfo()">Save Info</button>
+    </div>
+  </div>
+
+  <!-- Zodiac Information Panel (Left) -->
+  <div class="info-panel left-panel" id="zodiacPanelLeft" style="display: none;">
+    <div class="panel-header">
+      <button class="close-btn" onclick="closeZodiacInfo()">&times;</button>
+      <h2 id="zodiacTitleLeft">Pluto in Aries</h2>
+    </div>
+    <div class="panel-content" id="zodiacContentContainer">
+      <div class="content-inner">
+        <div id="zodiacContentLeft">
+          <p>Navigate with ← → arrows to see Pluto's zodiac influences.</p>
+        </div>
+      </div>
+      <button class="save-button" id="zodiacSaveBtn" onclick="saveZodiacInfo()">Save Info</button>
+    </div>
+  </div>
+
+  <div class="topbar">
+    <button class="menu" id="menuBtn">MENU</button>
+  </div>
+
+  <div id="menuOverlay" class="overlay" aria-hidden="true">
+    <div class="overlay__scrim" data-close></div>
+
+    <div class="columns">
+      <div class="col col--left" id="colHouse">
+        <div class="col__title">HOUSE</div>
+        <svg class="menu-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+          <path id="housePath" class="rail" d="M 200,20 C 320,260 320,740 200,980"></path>
+          <g id="houseGroup"></g>
+        </svg>
+      </div>
+
+      <div class="col col--right" id="colZod">
+        <div class="col__title">ZODIAC</div>
+        <svg class="menu-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+          <path id="zodPath" class="rail" d="M 800,20 C 680,260 680,740 800,980"></path>
+          <g id="zodGroup"></g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="overlay__hint">Click anywhere to close · Scroll a side to browse</div>
+    <button class="overlay__go" type="button" data-close>GO</button>
+  </div>
+  <div class="mode-bubbles" aria-label="Change view">
+    <button class="mode-bubble bubble-h" title="House mode" aria-label="House">H</button>
+    <button class="mode-bubble bubble-z" title="Zodiac mode" aria-label="Zodiac">Z</button>
+  </div>
+  <!-- The p5.js canvas will be created here by sketch.js -->
+  <script src="sketch-background.js"></script>
+  <script src="sketch.js"></script>
+  <script src="script.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Try sessionStorage first (intro → app)
+    let name = sessionStorage.getItem('userName') || '';
+
+    // Fallback: allow ?name=Alice in the URL
+    if (!name) {
+      const m = new URLSearchParams(location.search).get('name');
+      if (m) name = m;
+    }
+
+    if (name && window.bgSetName) {
+      window.bgSetName(name);
+    }
+  });
+</script>
+</body>
+
+</html>
